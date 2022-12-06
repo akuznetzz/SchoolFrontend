@@ -1,12 +1,31 @@
 <template>
-  <div id="app">
+  <div class="main-container" id="app">
     <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      <router-link :to="{ name: 'Schedule' }">Расписание</router-link>
+      <router-link :to="{ name: 'TeacherList' }">Учителя</router-link>
+      <router-link :to="{ name: 'Journal' }">Журнал оценок</router-link>
+      <router-link :to="{ name: 'TeacherAttendance' }">Табель</router-link>
+      <router-link :to="{ name: 'TeacherSalary' }">Расчёт ЗП</router-link>
+      <router-link :to="{ name: 'AddPage' }">Добавление сущностей</router-link>
+
     </nav>
-    <router-view/>
+    <router-view class="view" />
   </div>
 </template>
+
+<script>
+export default {
+
+  created() {
+    this.$store.dispatch('setSubjects')
+    this.$store.dispatch('setTeachers')
+
+
+    // setTimeout(() => console.log(this.$store.getters.teacherById(1)), 1000)
+  }
+}
+
+</script>
 
 <style>
 #app {
@@ -15,18 +34,30 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  display: flex;
+  flex-direction: row;
+
 }
 
 nav {
   padding: 30px;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
 }
 
 nav a {
   font-weight: bold;
   color: #2c3e50;
+  display: block;
+  margin: 1ch;
 }
 
 nav a.router-link-exact-active {
   color: #42b983;
+}
+
+.view {
+  margin-top: 50px;
 }
 </style>
