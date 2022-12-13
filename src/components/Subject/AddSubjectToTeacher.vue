@@ -22,7 +22,7 @@ export default {
     data() {
         return {
             // allSubjects: [],
-            selectedSubjects: null
+            selectedSubjects: this.subjects
         }
     },
 

@@ -2,6 +2,13 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import subjects from './modules/subjects.js'
 import teachers from './modules/teachers.js'
+import timepairs from './modules/timepairs.js'
+import classes from './modules/classes.js'
+import classrooms from './modules/classrooms.js'
+import schedule from './modules/schedule.js'
+
+
+
 
 
 Vue.use(Vuex)
@@ -17,6 +24,10 @@ export default new Vuex.Store({
   },
   modules: {
     subjects,
-    teachers
+    teachers,
+    timepairs,
+    classes,
+    classrooms,
+    schedule
   }
 })

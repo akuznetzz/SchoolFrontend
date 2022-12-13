@@ -16,8 +16,6 @@ import checkBillings from '@/services/checkBillings.js';
 
 
 
-
-
 export default {
     props: ['id'],
 
@@ -28,12 +26,19 @@ export default {
         }
     },
 
+    // computed: {
+    //     teacher() {
+    //         return this.$store.getters.teacherById(this.id)
+    //     }
+
+    // },
+
     components: {
         TeacherCard,
     },
 
     async created() {
-
+        this.teacher = this.$store.getters.teacherById(this.id)
 
         await TeacherService.getTeachers(this.id)
             .then(resp => this.teacher = resp.data)
@@ -51,7 +56,7 @@ export default {
         eventBus.$on('remove-billing', id => {
             const index1 = this.teacher.billing.indexOf(id)
             this.teacher.billing.splice(index1, 1)
-            TeacherService.changeTeacher(this.id, this.teacher)
+            TeacherService.editTeacher(this.id, this.teacher)
 
             const index2 = this.billings.findIndex(item => item.id == id)
             this.billings.splice(index2, 1)
@@ -63,20 +68,20 @@ export default {
                 .then(resp => {
                     this.billings.push(resp)
                     this.teacher.billing.push(resp.id)
-                    TeacherService.changeTeacher(this.id, this.teacher)
+                    TeacherService.editTeacher(this.id, this.teacher)
                 })
         })
 
         eventBus.$on('change-subject', subjects => {
             this.teacher.subject = subjects
             // console.log(this.teacher)
-            TeacherService.changeTeacher(this.id, this.teacher)
+            TeacherService.editTeacher(this.id, this.teacher)
         })
     },
 
     methods: {
         changeTeacher(teacher) {
-            TeacherService.changeTeacher(this.id, teacher)
+            TeacherService.editTeacher(this.id, teacher)
         }
     }
 

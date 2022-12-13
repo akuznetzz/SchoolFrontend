@@ -19,9 +19,14 @@ export default {
   created() {
     this.$store.dispatch('setSubjects')
     this.$store.dispatch('setTeachers')
+    this.$store.dispatch('setTimepairs')
+    this.$store.dispatch('setClasses')
+    this.$store.dispatch('setClassrooms')
+    this.$store.dispatch('setSchedule')
 
 
-    // setTimeout(() => console.log(this.$store.getters.teacherById(1)), 1000)
+
+    // setTimeout(() => console.log(this.$store.getters.allClassrooms), 1000)
   }
 }
 

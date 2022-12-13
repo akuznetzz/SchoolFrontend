@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const apiClient = axios.create({
-    baseURL: 'http://127.0.0.1:3000/api/rfw/school/teachers/',
+    baseURL: 'http://127.0.0.1:3000/api/rfw/school/schedule/',
     withCredentials: false,
     headers: {
         Accept: 'application/json',
@@ -10,7 +10,7 @@ const apiClient = axios.create({
 })
 
 export default {
-    getTeachers(n) {
+    getSchedule(n) {
         if (n) {
             return apiClient.get(`${n + '/'}`)
         } else {
@@ -18,15 +18,15 @@ export default {
         }
     },
 
-    setTeacher(o) {
+    setSchedule(o) {
         return apiClient.post('', o)
     },
 
-    editTeacher(id, o) {
+    editSchedule(id, o) {
         return apiClient.patch(`${id + '/'}`, o)
     },
 
-    deleteTeacher(k) {
+    deleteSchedule(k) {
         return apiClient.delete(`${k + '/'}`)
     },
 }

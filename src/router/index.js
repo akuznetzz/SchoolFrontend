@@ -11,6 +11,9 @@ import AddTeacher from '@/views/AddSmth/AddTeacher.vue';
 import AddSchedule from '@/views/AddSmth/AddSchedule.vue';
 import AddClassroom from '@/views/AddSmth/AddClassroom.vue';
 import AddSubject from '@/views/AddSmth/AddSubject.vue';
+import AddClass from '@/views/AddSmth/AddClass.vue';
+import Timepair from '@/views/AddSmth/Timepair.vue';
+
 
 
 
@@ -73,6 +76,16 @@ const routes = [
     path: '/add-page/add-subject',
     name: 'AddSubject',
     component: AddSubject
+  },
+  {
+    path: '/add-page/add-class',
+    name: 'AddClass',
+    component: AddClass
+  },
+  {
+    path: '/add-page/timepair',
+    name: 'Timepair',
+    component: Timepair
   },
 
   // {
