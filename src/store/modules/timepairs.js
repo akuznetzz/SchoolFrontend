@@ -1,7 +1,7 @@
 import TimepairService from "@/services/TimepairService.js"
 
 const state = {
-  timepairs: null
+  timepairs: []
 }
 
 const getters = {

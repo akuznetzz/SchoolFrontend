@@ -1,7 +1,7 @@
 import ClassService from "@/services/ClassService.js"
 
 const state = {
-  classes: null
+  classes: []
 }
 
 const getters = {

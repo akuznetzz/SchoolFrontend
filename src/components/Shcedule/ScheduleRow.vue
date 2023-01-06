@@ -1,24 +1,14 @@
 <template>
     <div @change.prevent="changeSlot">
-        <select v-if="!scheduleSlot.subject" v-model="scheduleSlot.teacher">
+        <select v-model="scheduleSlot.teacher">
             <option selected disabled>---</option>
             <option v-for="teacher in allTeachers" :value="teacher.id">{{ teacher.last_name }}</option>
         </select>
-        <select v-else v-model="scheduleSlot.teacher">
-            <option selected disabled>---</option>
-            <option v-for="teacher in subject.has_subject" :value="teacher.id">{{ teacher.last_name }}
-            </option>
-        </select>
 
-        <select v-if="!scheduleSlot.teacher" v-model="scheduleSlot.subject">
+        <select v-model="scheduleSlot.subject">
             <option selected disabled>---</option>
             <option v-for="subject in allSubjects" :value="subject.id">{{ subject.name }}</option>
         </select>
-        <select v-else v-model="scheduleSlot.subject">
-            <option selected disabled>---</option>
-            <option v-for="subject in teacherSubjects" :value="subject.id">{{ subject.name }}</option>
-        </select>
-
 
         <select v-model="scheduleSlot.classroom">
             <option selected disabled>---</option>
@@ -37,8 +27,6 @@ export default {
 
     data() {
         return {
-            // teacher: null,
-            // subject: null,
 
             scheduleSlot: {
                 timepair: this.timepair,
@@ -54,11 +42,19 @@ export default {
 
     watch: {
         day(val, oldVal) {
-            // if (val !== oldVal) { console.log(val) }
             this.scheduleSlot.dayOfWeek = val
+
+
+
             let id = this.getScheduleSlotId(this.scheduleSlot)
+
             if (id) {
-                this.scheduleSlot = this.scheduleSlotById(id)
+                Object.assign(this.scheduleSlot, this.scheduleSlotById(id))
+            } else {
+                this.scheduleSlot.teacher = null
+                this.scheduleSlot.subject = null
+                this.scheduleSlot.classroom = null
+                this.scheduleSlot.id = null
             }
         }
     },
@@ -69,33 +65,39 @@ export default {
             'allSubjects',
             'allClassrooms',
             'getScheduleSlotId',
-            'scheduleSlotById'
+            'scheduleSlotById',
+            'timepairBusyTeachers'
         ]),
 
-        teacherSubjects() {
-            return this.teacher.subject.map(item =>
-                this.allSubjects.find(e => e.id == item)
-            )
-        }
+        // отображать в селекторе только доступных учителей. Но ещё не работает и возникает вопрос как правильно встроить эту логику
+        // availableTeachers() {
+        //     const availableTeachers = [...this.allTeachers]
+        //     const indexes = []
+        //     const busyTeachers = this.timepairBusyTeachers(this.timepair, this.day)
+
+        //     busyTeachers.forEach(item => {
+        //         indexes.push(this.allTeachers.findIndex(elem => elem.id == item))
+        //     })
+        //     console.log(indexes)
+
+        //     indexes.forEach(item => availableTeachers.splice(item, 1))
+
+        //     return availableTeachers
+        // }
+
     },
 
-    updated() {
-        // console.log(this.day)
-    },
+
 
     methods: {
         changeSlot() {
             if (this.day === null) { alert('Выберите день недели'); return }
-            else { }
 
             if (!this.scheduleSlot.id) {
                 if (this.getScheduleSlotId(this.scheduleSlot)) {
                     this.scheduleSlot.id = this.getScheduleSlotId(this.scheduleSlot)
                 }
             }
-
-            if (this.teacher !== null) { this.scheduleSlot.teacher = this.teacher.id }
-            if (this.subject !== null) { this.scheduleSlot.subject = this.subject.id }
 
             eventBus.$emit('change-slot', this.scheduleSlot)
         }

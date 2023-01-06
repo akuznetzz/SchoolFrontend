@@ -1,7 +1,8 @@
 import ScheduleService from "@/services/ScheduleService.js"
 
 const state = {
-  schedule: null,
+  schedule: [],
+  scheduleLoaded: false,
 }
 
 const getters = {
@@ -12,10 +13,26 @@ const getters = {
     return state.schedule.find(item => item.id == id)
   },
   getScheduleSlotId: (state) => (obj) => {
-    let item = state.schedule.find(item => item.dayOfWeek == obj.dayOfWeek &&
-      item.timepair == obj.timepair &&
-      item.group == obj.group)
+    let item = state.schedule.find(item => item.dayOfWeek === obj.dayOfWeek &&
+      item.timepair === obj.timepair &&
+      item.group === obj.group)
     if (item) { return item.id }
+  },
+  timepairBusyTeachers: (state) => (timepair, dayOfWeek) => {
+    const result = []
+    state.schedule.forEach(item => {
+      if (item.timepair === timepair && item.dayOfWeek === dayOfWeek) result.push(item.teacher)
+    })
+    return result
+  },
+  getDayScheduleByGroup: (state) => (day, group) => {
+    return state.schedule.filter(item => item.dayOfWeek === day && item.group === group)
+  },
+  getScheduleCell: (state) => (day, group, timepair) => {
+    return state.schedule.find(item => item.dayOfWeek === day && item.group === group && item.timepair === timepair)
+  },
+  getScheduleByDay: (state) => (day) => {
+    return state.schedule.filter(item => item.dayOfWeek === day)
   }
 
 }
@@ -23,6 +40,7 @@ const getters = {
 
 const mutations = {
   setSchedule(state, payload) {
+    state.scheduleLoaded = true
     return state.schedule = payload
   },
   addScheduleSlot(state, payload) {

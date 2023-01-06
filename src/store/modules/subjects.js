@@ -1,7 +1,7 @@
 import SubjectService from "@/services/SubjectService.js"
 
 const state = {
-  subjects: null
+  subjects: []
 }
 
 const getters = {

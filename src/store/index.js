@@ -6,6 +6,7 @@ import timepairs from './modules/timepairs.js'
 import classes from './modules/classes.js'
 import classrooms from './modules/classrooms.js'
 import schedule from './modules/schedule.js'
+import timesheet from './modules/timesheet.js'
 
 
 
@@ -28,6 +29,7 @@ export default new Vuex.Store({
     timepairs,
     classes,
     classrooms,
-    schedule
+    schedule,
+    timesheet
   }
 })

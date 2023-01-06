@@ -4,7 +4,7 @@
       <router-link :to="{ name: 'Schedule' }">Расписание</router-link>
       <router-link :to="{ name: 'TeacherList' }">Учителя</router-link>
       <router-link :to="{ name: 'Journal' }">Журнал оценок</router-link>
-      <router-link :to="{ name: 'TeacherAttendance' }">Табель</router-link>
+      <router-link :to="{ name: 'Timesheet' }">Табель</router-link>
       <router-link :to="{ name: 'TeacherSalary' }">Расчёт ЗП</router-link>
       <router-link :to="{ name: 'AddPage' }">Добавление сущностей</router-link>
 
@@ -16,17 +16,16 @@
 <script>
 export default {
 
-  created() {
+  beforeCreate() {
     this.$store.dispatch('setSubjects')
     this.$store.dispatch('setTeachers')
     this.$store.dispatch('setTimepairs')
     this.$store.dispatch('setClasses')
     this.$store.dispatch('setClassrooms')
     this.$store.dispatch('setSchedule')
+    this.$store.dispatch('setTimesheet')
 
 
-
-    // setTimeout(() => console.log(this.$store.getters.allClassrooms), 1000)
   }
 }
 

@@ -1,7 +1,7 @@
 import TeacherService from "@/services/TeacherService.js"
 
 const state = {
-  teachers: null
+  teachers: []
 }
 
 const getters = {

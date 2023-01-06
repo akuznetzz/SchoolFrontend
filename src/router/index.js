@@ -4,7 +4,7 @@ import AllTeachers from '../views/AllTeachers.vue'
 import TeacherShow from '../views/TeacherShow.vue'
 import Schedule from '@/views/Schedule.vue';
 import Journal from '@/views/Journal.vue';
-import TeacherAttendance from '@/views/TeacherAttendance.vue';
+import Timesheet from '@/views/Timesheet.vue';
 import TeacherSalary from '@/views/TeacherSalary.vue';
 import AddPage from '@/views/AddSmth/AddPage.vue';
 import AddTeacher from '@/views/AddSmth/AddTeacher.vue';
@@ -13,6 +13,8 @@ import AddClassroom from '@/views/AddSmth/AddClassroom.vue';
 import AddSubject from '@/views/AddSmth/AddSubject.vue';
 import AddClass from '@/views/AddSmth/AddClass.vue';
 import Timepair from '@/views/AddSmth/Timepair.vue';
+import EditSchedule from '@/views/EditSchedule.vue';
+
 
 
 
@@ -27,6 +29,11 @@ const routes = [
     component: Schedule
   },
   {
+    path: '/edit-schedule',
+    name: 'EditSchedule',
+    component: EditSchedule
+  },
+  {
     path: '/journal',
     name: 'Journal',
     component: Journal
@@ -37,9 +44,9 @@ const routes = [
     component: TeacherSalary
   },
   {
-    path: '/teacher/attendance',
-    name: 'TeacherAttendance',
-    component: TeacherAttendance
+    path: '/timesheet',
+    name: 'Timesheet',
+    component: Timesheet
   },
   {
     path: '/teachers',

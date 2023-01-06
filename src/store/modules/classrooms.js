@@ -1,7 +1,7 @@
 import ClassroomService from "@/services/ClassroomService.js"
 
 const state = {
-  classrooms: null
+  classrooms: []
 }
 
 const getters = {
