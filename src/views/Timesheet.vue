@@ -1,7 +1,11 @@
 <template>
     <div>
-        Табель <br>
-        {{ dateString }}
+
+        <router-link :to="{ name: 'MonthTimesheet' }">Табель на месяц</router-link>
+
+        <BaseDate @getDate="getDate" />
+
+
         <div v-if="scheduleLoaded" class="wrapper">
             <div class="group" v-for="group in allClasses">
                 <div class="group__name"> {{ group.name }} </div>
@@ -32,12 +36,10 @@ export default {
 
     data() {
         return {
-            daysOfWeek: ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
-            months: ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'],
-            month: null,
-            day: null,
+            month: this.$store.state.date.month,
+            day: this.$store.state.date.dayOfWeek,
             submited: false,
-            date: null
+            date: this.$store.state.date.today
 
         }
     },
@@ -46,22 +48,17 @@ export default {
         ...mapGetters([
             'allTimepairs',
             'allClasses',
-            'schedule'
+            'schedule',
+            'dayOfWeekByNumber',
+            'dayOfMonth',
+            'dayOfWeek',
+            'today',
+            'getMonth'
 
         ]),
 
         scheduleLoaded() {
             return this.$store.state.schedule.scheduleLoaded
-        },
-
-
-        dateString() {
-            let now = new Date()
-            this.day = this.daysOfWeek[now.getDay() - 1]
-            this.month = this.months[now.getMonth()]
-            this.date = now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + now.getDate()
-
-            return now.getDate() + ' ' + this.month + ' ' + now.getFullYear() + ',' + ' ' + this.day
         },
 
     },
@@ -71,8 +68,23 @@ export default {
             this.submited = true
             event.target.disabled = true
 
+        },
+
+        getDate(data) {
+            this.date = data
+            const date = new Date(data)
+            this.day = this.dayOfWeekByNumber(date.getDay())
+        }
+    },
+
+    watch: {
+        dayOfMonth() {
+            this.month = this.getMonth
+            this.day = this.dayOfWeek
+            this.date = this.today
         }
     }
+
 
 }
 </script>

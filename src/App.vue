@@ -2,11 +2,11 @@
   <div class="main-container" id="app">
     <nav>
       <router-link :to="{ name: 'Schedule' }">Расписание</router-link>
-      <router-link :to="{ name: 'TeacherList' }">Учителя</router-link>
       <router-link :to="{ name: 'Journal' }">Журнал оценок</router-link>
       <router-link :to="{ name: 'Timesheet' }">Табель</router-link>
-      <router-link :to="{ name: 'TeacherSalary' }">Расчёт ЗП</router-link>
-      <router-link :to="{ name: 'AddPage' }">Добавление сущностей</router-link>
+      <router-link :to="{ name: 'Salary' }">Расчёт ЗП</router-link>
+      <router-link :to="{ name: 'ListsIndex' }">Списки</router-link>
+
 
     </nav>
     <router-view class="view" />
@@ -24,6 +24,12 @@ export default {
     this.$store.dispatch('setClassrooms')
     this.$store.dispatch('setSchedule')
     this.$store.dispatch('setTimesheet')
+    this.$store.dispatch('setPaytypes')
+    this.$store.dispatch('setBillings')
+    this.$store.dispatch('setSalary')
+    this.$store.dispatch('setToday')
+    this.$store.dispatch('setStudents')
+    this.$store.dispatch('setJournal')
 
 
   }

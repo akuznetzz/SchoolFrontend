@@ -1,6 +1,7 @@
 <template>
     <div>
-        Зарплата
+        Список классов
+
     </div>
 </template>
 

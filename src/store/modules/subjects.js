@@ -1,7 +1,8 @@
 import SubjectService from "@/services/SubjectService.js"
 
 const state = {
-  subjects: []
+  subjects: [],
+  subjectsLoaded: false
 }
 
 const getters = {
@@ -17,6 +18,7 @@ const getters = {
 
 const mutations = {
   setSubjects(state, payload) {
+    state.subjectsLoaded = true
     return state.subjects = payload
   },
   addSubject(state, payload) {

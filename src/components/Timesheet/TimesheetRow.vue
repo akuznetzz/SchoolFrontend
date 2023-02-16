@@ -17,7 +17,6 @@
 <script>
 import { mapGetters } from 'vuex';
 import TimesheetService from '@/services/TimesheetService.js';
-import { mapMutations } from 'vuex';
 
 export default {
     props: ['day', 'group', 'timepair', 'submited', 'date'],
@@ -34,26 +33,33 @@ export default {
         ...mapGetters([
             'allTeachers',
             'allSubjects',
+            'getScheduleCell'
         ]),
 
     },
 
-    // watch: {
-    //     submited() {
-    //         if (this.teacher && this.subject) {
-    //             const timesheet = {
-    //                 teacher: this.teacher,
-    //                 subject: this.subject,
-    //                 hoursAmount: 1,
-    //                 date: this.date
-    //             }
-    //             TimesheetService.setTimesheet(timesheet)
-    //                 .then(resp => { this.$store.commit('addTimesheet', resp.data) })
-    //                 .catch(err => console.log(err))
-    //         }
+    watch: {
+        date() {
+            this.teacher = this.getScheduleCell(this.day, this.group, this.timepair)?.teacher
+            this.subject = this.getScheduleCell(this.day, this.group, this.timepair)?.subject
+        },
 
-    //     }
-    // }
+        submited() {
+            if (this.teacher && this.subject) {
+                const timesheet = {
+                    teacher: this.teacher,
+                    subject: this.subject,
+                    hoursAmount: 1,
+                    date: this.date
+                }
+                TimesheetService.setTimesheet(timesheet)
+                    .then(resp => {
+                        this.$store.dispatch('setTimesheet')
+                    })
+                    .catch(err => console.log(err))
+            }
+        }
+    }
 
 
 }

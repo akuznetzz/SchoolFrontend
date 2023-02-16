@@ -1,7 +1,6 @@
 <template>
     <div>
         <nav>
-            <router-link :to="{ name: 'AddSchedule' }">Добавить расписание</router-link>
             <router-link :to="{ name: 'AddClassroom' }">Добавить кабинет</router-link>
             <router-link :to="{ name: 'AddSubject' }">Добавить предмет</router-link>
             <router-link :to="{ name: 'AddClass' }">Добавить класс</router-link>

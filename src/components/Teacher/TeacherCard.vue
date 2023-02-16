@@ -1,103 +1,181 @@
 <template>
     <div>
-        <form class="add-teacher" @change.prevent="$emit('change-teacher', teacher)"
-            @submit.prevent="$emit('add-teacher', submitButton)">
-            <p>
-                <input type="text" v-model="teacher.last_name" name="last-name" required>
-                <label for="last-name"> Фамилия</label>
-            </p>
-            <p>
-                <input type="text" v-model="teacher.first_name" name="first-name" required>
-                <label for="first-name"> Имя</label>
-            </p>
-            <p>
-                <input type="text" v-model="teacher.middle_name" name="middle-name">
-                <label for="middle-name"> Отчество</label>
-            </p>
-            <p>
-                <input type="email" v-model="teacher.email" name="email" required>
-                <label for="email"> Email</label>
-            </p>
-            <p>
-                <input type="tel" v-model="teacher.phone" name="phone"
-                    pattern="\+7\s?[\(]{0,1}9[0-9]{2}[\)]{0,1}\s?\d{3}[-]{0,1}\d{2}[-]{0,1}\d{2}" required>
-                <label for="phone"> Телефон</label>
-            </p>
-            <p>
-                <input type="date" v-model="teacher.birthday" name="birthday">
-                <label for="birthday"> Дата рождения</label>
-            </p>
-
-            <p>
-                <AddSubject :subjects="subjects" />
-            </p>
-
-            <div v-if="billings.length">
-                <div v-for="(billing, index) in billings" :key="index">
-                    <span> {{ billing.pay_type.name }}: </span>
-                    <span> ставка: {{ billing.rate }}; </span>
-                    <span v-if="billing.ratio">коэффициент: {{ billing.ratio }};</span>
-                    <span v-if="billing.isFixed">фиксированная</span>
-                    <button @click.prevent="removeBilling(billing.id, index)">Удалить</button>
+        <div class="go-back-link">
+            <router-link :to="{ name: 'TeachersList' }"> К списку</router-link>
+        </div>
+        <div v-if="teachersLoaded">
+            <TeacherInput :id="id" @setTeacherBaseInfo="setBaseInfo" />
+            <subjects-for-teacher-card :subj="subj" @setSubj="setSubject" />
+            <div>
+                <div class="billings">
+                    <billing-table-header />
+                    <div class="billing__body">
+                        <billing-item-for-teacher-card v-if="bills" v-for="bill in bills" :key="bill" :bill="bill"
+                            @changeBilling="test" @setBilling="setBilling" />
+                    </div>
                 </div>
+
+                <billing-item-for-teacher-card @setBilling="setBilling" class="add-billing" />
+
             </div>
-            <p>
-                <AddBilling />
-            </p>
-
-            <input class="submit" v-if="!teacher.id" type="submit" name="onemore" value="Добавить и внести ещё">
-            <input class="submit" v-if="!teacher.id" type="submit" name="close" value="Добавить и закрыть">
-            <button v-if="teacher.id" @click.prevent="leave">Сохранить и выйти</button>
-
-
-
-        </form>
+        </div>
     </div>
+
 </template>
 
 <script>
-import { eventBus } from '../../main.js'
-import AddBilling from '@/components/Billing/AddBilling.vue';
-import AddSubject from '@/components/Subject/AddSubjectToTeacher.vue';
-
+import { mapGetters } from 'vuex';
+import SubjectsForTeacherCard from '../Subject/SubjectsForTeacherCard.vue';
+import TeacherInput from './TeacherInput.vue';
+import BillingItemForTeacherCard from '@/components/Billing/BillingItemForTeacherCard.vue';
+import BillingTableHeader from '@/components/Billing/BillingTableHeader.vue';
+import TeacherService from '@/services/TeacherService';
+import BillingService from '@/services/BillingService';
 
 export default {
-    components: { AddBilling, AddSubject },
-    props: ['teacher', 'billings', 'subjects'],
+    props: ["id"],
+
     data() {
         return {
-            submitButton: '',
+            subj: null,
+            bills: null,
+            teacher: null
+        }
+    },
+    components: {
+        TeacherInput,
+        SubjectsForTeacherCard,
+        BillingItemForTeacherCard,
+        BillingTableHeader,
+    },
+
+    methods: {
+        editTeacher() {
+            this.$store.commit('editTeacher', this.teacher)
+            TeacherService.editTeacher(this.teacher.id, this.teacher).catch(err => console.log(err))
+        },
+
+        setBaseInfo(data) {
+            if (this.teacher) {
+                for (let key in data) {
+                    this.teacher[key] = data[key]
+                }
+                this.editTeacher()
+
+
+            } else {
+                this.teacher = { ...data }
+                TeacherService.setTeacher(this.teacher)
+                    .then(resp => {
+                        this.teacher.id = resp.data.id
+                        this.$store.commit('addTeacher', resp.data)
+                    })
+                    .catch(err => console.log(err))
+            }
+
+        },
+
+        setSubject(data) {
+            if (this.teacher) {
+                this.teacher.subject = [...data]
+                this.editTeacher()
+                console.log(this.teacher)
+            }
+        },
+
+        changeBilling() {
+            //TODO: изменение оплаты на лету
+        },
+
+        setBilling(data) {
+            if (data.id) {
+                const index = this.teacher.billing.indexOf(data.id)
+                this.teacher.billing.splice(index, 1)
+                this.editTeacher()
+            } else {
+                if (this.teacher) {
+                    if (!this.teacher.billing) this.teacher.billing = []
+
+                    const billing = this.getBillingByAllKeys(data)
+
+                    if (billing) {
+                        this.teacher.billing.push(billing.id)
+                        this.editTeacher()
+
+                    } else {
+                        BillingService.setBilling(data).then(resp => {
+                            this.$store.commit('addBilling', resp.data)
+                            this.teacher.billing.push(resp.data.id)
+                            this.editTeacher()
+                        })
+
+                    }
+                }
+            }
+        },
+
+        test(data) {
+            console.log(data)
+        },
+
+        loaded() {
+            if (this.teachersLoaded) {
+                if (this.id) {
+                    this.teacher = { ... this.teacherById(this.id) }
+                    this.subj = this.teacher.subject
+                    this.bills = this.teacher.billing
+                }
+            }
+        }
+    },
+
+    computed: {
+        ...mapGetters([
+            'teacherById',
+            'getBillingByAllKeys'
+        ]),
+
+        teachersLoaded() {
+            return this.$store.state.teachers.teachersLoaded
+        },
+
+    },
+
+    watch: {
+        teachersLoaded() {
+            this.loaded()
         }
     },
 
     mounted() {
-        const buttons = document.querySelectorAll('.submit')
-        buttons.forEach(button => {
-            button.addEventListener('pointerdown', (e) => this.submitButton = e.target.name)
-        })
-    },
-
-    methods: {
-        removeBilling(id) {
-            eventBus.$emit('remove-billing', id)
-        },
-
-        addButtonName(e) {
-            this.submitButton = e.target.name
-        },
-
-        leave() {
-            window.location.href = 'http://127.0.0.1:8080/teachers'
-
-        }
+        this.loaded()
     }
-
 }
 </script>
 
-<style scoped>
-div form {
+<style lang="scss"  scoped>
+.billings {
+    display: grid;
+    grid-template-rows: repeat(3, auto);
+    margin-top: 20px;
+}
+
+.billing {
+
+    &__body {
+        border-bottom: 1px solid #000;
+        border-left: 1px solid #000;
+    }
+
+
+}
+
+.add-billing {
+    margin-top: 10px;
+
+}
+
+.go-back-link {
     text-align: left;
 }
 </style>
-

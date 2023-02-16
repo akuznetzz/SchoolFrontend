@@ -10,7 +10,17 @@ const getters = {
   },
   timesheetById: (state) => (id) => {
     return state.timesheet.find(item => item.id == id)
-  }
+  },
+  timesheetByDate: (state) => (date) => {
+    return state.timesheet.filter(item => item.date == date)
+  },
+  timesheetByDatePaytypeTeacher: (state) => (date, paytype, teacher) => {
+    return state.timesheet.find(item => item.date === date && item.subject.pay_type === paytype && item.teacher.id === teacher)
+  },
+  timesheetByMonthPaytypeTeacher: (state) => (date, paytype, teacher) => {
+    return state.timesheet.filter(item => item.date.includes(date) && item.subject.pay_type == paytype && item.teacher.id == teacher)
+  },
+
 
 }
 
@@ -20,7 +30,7 @@ const mutations = {
     return state.timesheet = payload
   },
   addTimesheet(state, payload) {
-    return state.timesheet.push(payload)
+    return state.timesheet = [...state.timesheet, payload]
   }
 }
 const actions = {

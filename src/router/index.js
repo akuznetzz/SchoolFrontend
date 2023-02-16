@@ -1,19 +1,28 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import AllTeachers from '../views/AllTeachers.vue'
-import TeacherShow from '../views/TeacherShow.vue'
+// import TeacherShow from '../views/TeacherShow.vue'
 import Schedule from '@/views/Schedule.vue';
 import Journal from '@/views/Journal.vue';
 import Timesheet from '@/views/Timesheet.vue';
-import TeacherSalary from '@/views/TeacherSalary.vue';
+import Salary from '@/views/Salary.vue';
 import AddPage from '@/views/AddSmth/AddPage.vue';
-import AddTeacher from '@/views/AddSmth/AddTeacher.vue';
-import AddSchedule from '@/views/AddSmth/AddSchedule.vue';
 import AddClassroom from '@/views/AddSmth/AddClassroom.vue';
 import AddSubject from '@/views/AddSmth/AddSubject.vue';
 import AddClass from '@/views/AddSmth/AddClass.vue';
 import Timepair from '@/views/AddSmth/Timepair.vue';
 import EditSchedule from '@/views/EditSchedule.vue';
+import MonthTimesheet from '@/views/MonthTimesheet.vue';
+import ShowJournal from '@/views/ShowJournal.vue';
+import ListsIndex from '@/views/Lists/ListsIndex.vue';
+import Teachers from '@/views/Lists/Teachers.vue';
+import StudentsList from '@/views/Lists/StudentsList.vue';
+import SubjectsList from '@/views/Lists/SubjectsList.vue';
+import GroupsList from '@/views/Lists/GroupsList.vue';
+import ClassroomsList from '@/views/Lists/ClassroomsList.vue';
+import Timepairs from '@/views/Lists/Timepairs.vue';
+import TeacherCard from '@/components/Teacher/TeacherCard.vue'
+import Paytypes from '@/views/Lists/Paytypes.vue'
+
 
 
 
@@ -39,9 +48,9 @@ const routes = [
     component: Journal
   },
   {
-    path: '/teacher/salary',
-    name: 'TeacherSalary',
-    component: TeacherSalary
+    path: '/salary',
+    name: 'Salary',
+    component: Salary
   },
   {
     path: '/timesheet',
@@ -49,14 +58,20 @@ const routes = [
     component: Timesheet
   },
   {
-    path: '/teachers',
-    name: 'TeacherList',
-    component: AllTeachers
+    path: '/timesheet/month',
+    name: 'MonthTimesheet',
+    component: MonthTimesheet
+  },
+  {
+    path: '/teacher',
+    name: 'TeacherCardBlank',
+    component: TeacherCard,
+
   },
   {
     path: '/teacher/:id',
-    name: 'TeacherShow',
-    component: TeacherShow,
+    name: 'TeacherCard',
+    component: TeacherCard,
     props: true,
   },
   {
@@ -64,16 +79,7 @@ const routes = [
     name: 'AddPage',
     component: AddPage
   },
-  {
-    path: '/add-page/add-teacher',
-    name: 'AddTeacher',
-    component: AddTeacher
-  },
-  {
-    path: '/add-page/add-schedule',
-    name: 'AddSchedule',
-    component: AddSchedule
-  },
+
   {
     path: '/add-page/add-classroom',
     name: 'AddClassroom',
@@ -93,6 +99,51 @@ const routes = [
     path: '/add-page/timepair',
     name: 'Timepair',
     component: Timepair
+  },
+  {
+    path: '/show-journal',
+    name: 'ShowJournal',
+    component: ShowJournal
+  },
+  {
+    path: '/lists',
+    name: 'ListsIndex',
+    component: ListsIndex
+  },
+  {
+    path: '/lists/teachers',
+    name: 'Teachers',
+    component: Teachers
+  },
+  {
+    path: '/lists/students',
+    name: 'StudentsList',
+    component: StudentsList
+  },
+  {
+    path: '/lists/subjects',
+    name: 'SubjectsList',
+    component: SubjectsList
+  },
+  {
+    path: '/lists/groups',
+    name: 'GroupsList',
+    component: GroupsList
+  },
+  {
+    path: '/lists/classrooms',
+    name: 'ClassroomsList',
+    component: ClassroomsList
+  },
+  {
+    path: '/lists/timepairs',
+    name: 'Timepairs',
+    component: Timepairs
+  },
+  {
+    path: '/lists/paytypes',
+    name: 'Paytypes',
+    component: Paytypes
   },
 
   // {
