@@ -1,5 +1,8 @@
 # frontend
 
+## Description
+School ERP system frontend with base functionality without design
+
 ## Project setup
 ```
 npm install
