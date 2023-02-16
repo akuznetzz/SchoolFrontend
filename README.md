@@ -1,7 +1,7 @@
 # frontend
 
 ## Description
-School ERP system frontend with base functionality without design
+School ERP system frontend with base functionality without design. Wouldn't work without backend
 
 ## Project setup
 ```
